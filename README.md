@@ -39,3 +39,4 @@ series:
         })
         return array;
 ```
+![Chart](https://github.com/xuonghuynh/evnhcm_hassio/blob/main/assets/chart.png)
