@@ -16,3 +16,26 @@ sensor:
     makhach: PE00000000000  # Mã khách hàng
 ```
 5. Restart lại Home Assistant
+
+# Thêm chart vào lovelace
+1. Để thêm chart vào lovelace và theo dõi điện theo từng ngày, các bạn phải cài `apexcharts-card`. Hướng dẫn cài đặt apex-chart ở đây [apexcharts-card](https://github.com/RomRider/apexcharts-card). Note: nên cài qua HACS cho dể
+2. Thêm code này vào lovelace 
+``` yaml
+type: custom:apexcharts-card
+graph_span: 10d         # Số ngày bạn muốn hiển thị trên chart. Ví dụ: 3d, 5d, 1w, 1m
+header:
+  show: true
+  title: Điện Tiêu Thụ
+series:
+  - entity: sensor.evnhcm
+    type: column
+    data_generator: |
+        let array = []
+        entity.attributes.ngay_chart.map((date, index) => {
+            const dateString = moment(date, "DD/MM/YYYY").toDate();
+            const sanluong = parseFloat(entity.attributes.san_luong_chart[index])
+            const ngay = new Date(dateString).getTime()
+            array.push([ngay, sanluong]);
+        })
+        return array;
+```
